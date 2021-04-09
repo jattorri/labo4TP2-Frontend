@@ -1,6 +1,6 @@
 export class Pais{
     name: string;
-    capitol: string;
+    capital: string;
     region:string;
-    population: number;
+    population: string;
 }
