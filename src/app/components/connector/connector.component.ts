@@ -12,7 +12,8 @@ import {map} from 'rxjs/operators';
 export class ConnectorComponent implements OnInit {
 
   paises: Pais[] = [];
-  pais: Pais;
+  pais: Pais = new Pais();
+  paisAux: Pais = new Pais();
   constructor(public http:HttpClient) { }
 
   ngOnInit(): void {
@@ -24,20 +25,25 @@ export class ConnectorComponent implements OnInit {
         this.http.get<Pais[]>("https://restcountries.eu/rest/v2").subscribe(
         paises => {
           this.paises = {...paises}
-          //this.paises.push(paises)
           console.log(this.paises)
 
-         paises.forEach(pais =>{
-          this.http.post<Pais>('http://localhost:9000/api/paises', {title: 'Angular POST Request Example'}).subscribe(pais =>{ 
-            this.pais = pais;
-        });
-        console.log(this.pais) 
+         paises.forEach((pais: Pais) =>{
+          this.postCountries(pais)
          });
-          },
+        },
       error => { console.error(error)
       })
-}}
+}
 
+  postCountries(pais: Pais){
+  return this.http.post<Pais>('http://localhost:9000/api/paises', {nombre: pais.name, capital: pais.capital}).subscribe(
+    p =>{
+    this.paisAux = p;
+    console.log(this.paisAux)
+  })
+ 
+}
+}
 
 
 /*postCountries(pais: Pais) {
